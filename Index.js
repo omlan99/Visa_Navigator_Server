@@ -33,12 +33,28 @@ async function run() {
 
     const visaData = client.db('VisaData').collection('AllVisa')
     app.get('/', async (req,res)=>{
-      const limit = parseInt(req.query.limit) || 10;
+      const limit = parseInt(req.query.limit) || 100;
         const cursor = visaData.find().limit(limit);
         const result = await cursor.toArray();
         res.send(result)
     })
 
+    app.post('/addedVisa', async (req,res) =>{
+      try{
+        const formData = req.body;
+        const result = await visaData.insertOne(formData)
+
+        res.status(201).json({
+          message: 'visa data added successfully',
+          data : result,
+        })
+      }
+      catch(error){
+          console.log(error)
+      }
+      
+
+    })
 
 
 
