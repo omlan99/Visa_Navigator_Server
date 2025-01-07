@@ -29,11 +29,12 @@ async function run() {
     await client.connect();
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    console.log("Pinged your deployment. You successfully connected to MongoDB !");
 
     const visaData = client.db('VisaData').collection('AllVisa')
     app.get('/', async (req,res)=>{
-        const cursor = visaData.find();
+      const limit = parseInt(req.query.limit) || 10;
+        const cursor = visaData.find().limit(limit);
         const result = await cursor.toArray();
         res.send(result)
     })
