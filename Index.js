@@ -8,7 +8,9 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.json());
+
 app.use(cors())
+// app.use(cookieParser())
 
 
 
@@ -31,6 +33,8 @@ async function run() {
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB !");
 
+    // auth related api 
+
     const visaData = client.db('VisaData').collection('AllVisa')
     app.get('/', async (req,res)=>{
       const limit = parseInt(req.query.limit) || 100;
@@ -50,10 +54,17 @@ async function run() {
         })
       }
       catch(error){
-          console.log(error)
+          console.log({error :"Failed to load Data "})
       }
       
 
+    })
+    
+    app.get('/myVisa' , async (req,res) => {
+      const email = req.query.email;
+      const query = {email : email};
+      const result = await visaData.find(query).toArray()
+      res.send(result)
     })
 
 
