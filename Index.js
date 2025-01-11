@@ -42,6 +42,13 @@ async function run() {
         const result = await cursor.toArray();
         res.send(result)
     })
+    app.get('/visa/:id', async(req, res) =>{
+      const visaId = req.params.id
+      const query = {_id : new ObjectId(visaId)}
+      const result =await visaData.findOne(query)
+      console.log(result)
+      res.send(result)
+    })
 
     app.post('/addedVisa', async (req,res) =>{
       try{
@@ -59,6 +66,7 @@ async function run() {
       
 
     })
+
     
     app.get('/myVisa' , async (req,res) => {
       const email = req.query.email;
@@ -70,10 +78,15 @@ async function run() {
     app.delete('/delete/:id', async(req,res) =>{
         const visaId = req.params.id;
         const result = await visaData.deleteOne({_id : new ObjectId(visaId)})
-        console.log(result)
+   
         res.send(result)
     })
-
+    app.patch('/update/:id', async (req, res)=>{
+      const updateId = req.params.id;
+      const updateData = req.body;
+      const result = await visaData.updateOne({_id : new ObjectId(updateId)}, { $set: updateData })
+      res.send(result)
+    })
 
 
   } finally {
