@@ -49,6 +49,12 @@ async function run() {
       console.log(result)
       res.send(result)
     })
+    app.get('/type', async(req, res) =>{
+      const type = req.query.type;
+      const query = {visa_type : type};
+      const result = await visaData.find(query).toArray()
+      res.send (result)
+    })
 
     app.post('/addedVisa', async (req,res) =>{
       try{
@@ -85,6 +91,7 @@ async function run() {
       const updateId = req.params.id;
       const updateData = req.body;
       const result = await visaData.updateOne({_id : new ObjectId(updateId)}, { $set: updateData })
+      console.log(result)
       res.send(result)
     })
 
