@@ -77,9 +77,9 @@ async function run() {
 
     
     app.get('/myVisa' , async (req,res) => {
-      // const email = req.query.email;
-      // const query = {email : email};
-      const result = await visaData.find().toArray()
+      const email = req.query.email;
+      const query = {email : email};
+      const result = await visaData.find(query).toArray()
       res.send(result)
     })
 
@@ -125,6 +125,11 @@ async function run() {
   }
 }
 run().catch(console.dir);
+
+
+app.get('/' , async(req,res) => {
+  return res.send("Data")
+})
 
 
 
